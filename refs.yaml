@@ -1,0 +1,22 @@
+2n4401:
+  type: Reference
+  title: 2N4401 - General Purpose Transistors NPN Silicon - 2N4401-D
+  author: Onsemi
+  date: 2010-02
+  url: https://www.onsemi.com/download/data-sheet/pdf/2n4401-d.pdf
+
+biasing:
+  type: Web
+  title: Transistor Biasing and the Biasing of Transistors
+  author: Electronics Tutorials
+  url:
+    value: https://www.electronics-tutorials.ws/amplifier/transistor-biasing.html
+    date: 2026-09-24
+
+rrr:
+  type: Misc
+  title: 'Section 3: BJT Amplifiers'
+  author: Kyle Webb
+  url:
+    value: https://web.engr.oregonstate.edu/~webbky/ECE322_files/Section%203%20BJT%20Amplifiers.pdf
+    date: 2026-09-25
