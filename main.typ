@@ -62,8 +62,8 @@ stage is the load on the stage before it. To reduce confusion, each stage will b
 letter. The first stage is X, the second stage is Y, and the final stage is Z.
 
 The first step is to calculate the expected output signal.
-From @s:spec we have that $A_"v" >= 200$ and $V_"in,pp" = #qty(10, "mV")"pp"$. To account for
-tolerances in the components, we use $A_"v" = 220$, which gives us:
+From @s:spec we have $A_"v" >= 200$ and $V_"in,pp" = #qty(10, "mV")"pp"$. To account for tolerances
+in the components, we use $A_"v" = 220$, which gives us:
 
 $
 	V_"out,pp" = A_"v" V_"in,pp" = #qty(2.2, "V")"pp" \
@@ -171,9 +171,9 @@ maximum power values.
 Recall that the three transistors dissipate a maximum of #qty(814.64, "mW"), and each transistor
 must dissipate at most #qty(312.5, "mW"). Then, the smallest and largest possible maximum power
 dissipation of each transistor are #qty(189.64, "mW") and #qty(312.5, "mW"), respectively. Dividing
-by $V_"Z,CE" = V_"S" - V_"Z,E,Q" - V_"out,max"$ (remember that we are at the positive peak) we get
-the smallest and largest possible current draw of each transistor, which are #qty(105.36, "mA") and
-#qty(173.61, "mA"), respectively. This gives us:
+by $V_"Z,CE" = V_"S" - V_"Z,E,Q" - V_"out,max"$, we get the smallest and largest possible current
+draw of each transistor at the positive peak, which are #qty(105.36, "mA") and #qty(173.61, "mA"),
+respectively. This gives us:
 
 $
 	Delta I_"Z,E" = I_"Z,E,pos,max" - I_"Z,E,pos,min" = #qty(68.25, "mA")
