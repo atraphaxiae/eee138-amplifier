@@ -28,6 +28,21 @@
 	fill: (x, y) => if y > 0 and calc.rem(y, 2) == 0 { rgb("#efefef") },
 )
 
+#let vstable = table.with(
+	columns: (6em, auto),
+	align: (x, y) => if x == 0 { left } else { right },
+	inset: (x: 8pt, y: 4pt),
+	stroke: (x, y) => {
+		if x == 0 {
+			(right: 0.5pt)
+		}
+		if y <= 1 {
+			(top: 0.5pt)
+		}
+	},
+	fill: (x, y) => if y > 0 and calc.rem(y, 2) == 0  { rgb("#efefef") },
+)
+
 = Source
 The Git repository for this project is located at https://github.com/atraphaxiae/eee138-amplifier.
 The repository contains the license, source code, image assets, and LTSpice files.
@@ -250,3 +265,13 @@ $
 
 We will only be able to calculate the output impedance after finalizing the second common-emitter
 stage.
+
+== Simulation
+For the simulation, we use a #qty(2.4, "V")pp, #qty(3.93, "V") DC offset sine wave to simulate the
+output of the second common-emitter stage, at #qty(500, "Hz") and #qty(10, "kHz"). These values were
+found using $V_"Z,B,Q"$, $V_"out,pp"$ and the theoretical $A_"Z,v"$. We also use a placeholder
+output coupling capacitor value of #qty(470, "uF").
+
+At both frequencies, the measured gain is 0.90. This corresponds to a #qty(-2.17, "%") discrepancy
+between the theoretical and actual gain value, which is acceptable. This is the reason why we are
+targeting a gain of 220, to account for these variances.
