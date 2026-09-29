@@ -137,7 +137,7 @@ conditions, this gives a maximum power dissipation limit of #qty(312.5, "mW").
 
 In order to calculate the maximum power dissipation, we can use the power dissipation at the
 positive peak as an approximation, where $V_"Z,E" = V_"Z,E,Q" + V_"out,max"$ and
-$I_"out"$:
+$I_"out" = I_"out,max"$:
 
 $
 	P_("Q"_"Z"",max")
