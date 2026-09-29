@@ -192,12 +192,24 @@ $
 	I_"Z,E,Q" = I_"Z,E,Q,total"/3 = #qty(77.52, "mA")
 $
 
+Then we can find the voltage drop of the emitter-balancing resistors:
+
+$
+	V_"Z,EB,Q" = I_"Z,E,Q" R_"Z,EB" = #qty(77.52, "mV")
+$
+
 Assuming that $I_"Z,C" >> I_"Z,B"$, we can use $I_"Z,C,Q" = I_"Z,E,Q"$. From the datasheet @2n4401,
-this collector current corresponds to $V_"Z,BE" = 0.75$ #footnote[The datasheet only provides
+this collector current corresponds to $V_"Z,BE,Q" = 0.75$ #footnote[The datasheet only provides
 a $V_"BE"$ chart for $V_"CE" = #qty(10, "V")$, so this is an approximation.]. However, $beta$ is not
-given for this particular current, so we use $beta = 100$, which corresponds to the next test
+given for this particular current, so we use $beta_Z = 100$, which corresponds to the next test
 current above $I_"Z,C,Q"$. From this we can calculate the total base current:
 
 $
-	I_"Z,B,Q,total" = (3I_"Z,E,Q")/(beta + 1) = #qty(2.30, "mA")
+	I_"Z,B,Q,total" = (3I_"Z,E,Q")/(beta_Z + 1) = #qty(2.30, "mA")
+$
+
+Finally, we can get the voltage at the base:
+
+$
+	V_"Z,B,Q" = V_"Z,E,Q" + V_"Z,EB,Q" + V_"Z,BE,Q" = #qty(3.93, "V")
 $
