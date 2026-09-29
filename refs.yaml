@@ -1,0 +1,13 @@
+2n4401:
+  type: reference
+  title: 2N4401 - General Purpose Transistors NPN Silicon
+  author: Onsemi
+  date: 2010-02
+  url: https://www.onsemi.com/download/data-sheet/pdf/2n4401-d.pdf
+
+emitter-balancing:
+  type: thread
+  title: Parallel Transistors Current Sharing
+  url:
+    value: https://electronics.stackexchange.com/questions/440239/parallel-transistors-current-sharing
+    date: 2026-09
