@@ -140,8 +140,8 @@ positive peak as an approximation, where $V_"Z,E" = V_"Z,E,Q" + V_"out,max"$ and
 $I_"out" = I_"out,max"$:
 
 $
-	P_("Q"_"Z"",max")
-		approx& P_("Q"_"Z"",pos") \
+	P_("Q"_"Z","max")
+		approx& P_("Q"_"Z","pos") \
 		=& V_"Z,CE" I_"Z,E" \
 		=& (V_"S" - V_"Z,E")(I_"R"_"Z,E" + I_"out") \
 		=& (V_"S" - V_"Z,E,Q" - V_"out,max") \
@@ -213,3 +213,40 @@ Finally, we can get the voltage at the base:
 $
 	V_"Z,B,Q" = V_"Z,E,Q" + V_"Z,EB,Q" + V_"Z,BE,Q" = #qty(3.93, "V")
 $
+
+== AC Analysis
+For our small signal analysis, we will be assuming that $r_"Z,o"$ has a negligible effect on the
+overall workings of the amplifier, for each stage. We will be using the hybrid-pi model. Firstly we
+can calculate the transconductance and internal resistances of each parallel transistor at room
+temperature, as well as the AC load at the output with the output coupling capacitor shorted:
+
+$
+	g_"Z,m" = I_"Z,C,Q"/V_"T" = #qty(3.02, "S") \
+	r_"Z,e" = 1/g_"Z,m" = #qty(331.13, "mO") \
+	r_("Z",pi) = beta_"Z" r_"Z,e" = #qty(33.11, "O") \
+	R_"Z,L" = R_"Z,E" || R_"L" = #qty(5.00, "O")
+$
+
+Including the emitter-balancing resistors, and noting that each branch is in parallel, we have an
+effective small-signal resistance at the emitter:
+
+$
+	R_"Z,eff" = (r_"Z,e" + R_"Z,EB")/3 = #qty(443.71, "mO")
+$
+
+Then the gain is approximately:
+
+$
+	A_"Z,v" = R_"Z,L"/(R_"Z,L" + R_"Z,eff") = 0.92
+$
+
+Calculating the input impedance:
+
+$
+	R_"Z,in"
+		=& r_"Z,pi"/3 + (beta_"Z" + 1)(R_"Z,EB"/3 + R_"Z,L") \
+		=& #qty(549.70, "O")
+$
+
+We will only be able to calculate the output impedance after finalizing the second common-emitter
+stage.
