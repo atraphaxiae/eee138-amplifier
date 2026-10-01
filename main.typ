@@ -271,7 +271,7 @@ output of the second common-emitter stage, at #qty(500, "Hz") and #qty(10, "kHz"
 found using $V_"Z,B,Q"$, $V_"out,pp"$ and the theoretical $A_"Z,v"$. We also use a placeholder
 output coupling capacitor value of #qty(470, "uF").
 
-At both frequencies, the measured gain is #num(0.90). This corresponds to a #qty(-2.17, "%")
+At both frequencies, the simulated gain is #num(0.90). This corresponds to a #qty(-2.17, "%")
 discrepancy between the theoretical and actual gain value, which is acceptable. This is the reason
 why we are targeting a gain of #num(220), to account for these variances.
 
@@ -338,13 +338,13 @@ $
 	I_"Y,C,Q" = (V_"S" - V_"Y,C,Q")/R_"Y,C" - I_"Z,B,Q,total" = #qty("11.50", "mA")
 $
 
-The 2N3904 is a good transistor for this stage as it has a higher $beta$ and is more optimized for
+The 2N3904 is a good transistor for this stage, as it has a higher $beta$ and is more optimized for
 lower currents than the 2N4401, and has a maximum collector current of #qty(200, "mA"). From the
 datasheet @2n3904 and our $I_"Y,C,Q"$ we have $beta_"Y"$ ranging from 100 to 300. For our purposes,
 we set $beta_"Y" = 200$, which is the midpoint of these values. We also have
-$V_"Y,BE,Q" = #qty(0.7, "V")$ here #footnote[The datasheet only provides a $V_"BE"$ chart for
-$V_"CE" = #qty(1, "V")$, so this is yet another approximation.]. We can then calculate the base and
-emitter currents:
+$V_"Y,BE,Q" = #qty(0.7, "V")$ at this collector current #footnote[The datasheet only provides a
+$V_"BE"$ chart for $V_"CE" = #qty(1, "V")$, so this is yet another approximation.]. We can then
+calculate the base and emitter currents:
 
 $
 	I_"Y,B,Q" = I_"Y,C,Q"/beta_"Y" = #qty("57.50", "uA") \
@@ -390,7 +390,7 @@ $
 		=& #qty("33.80", "mW")
 $
 
-Which is well below the maximum power dissipation of the 2N3904 in ambient conditions @2n3904.
+This is well below the maximum power dissipation of the 2N3904 in ambient conditions @2n3904.
 
 == AC Analysis
 First we calculate the transconductance and internal resistances of the transistor at room
@@ -403,7 +403,7 @@ $
 	R_"Y,L" = R_"Y,C" || R_"Z,in" = #qty(117.84, "O")
 $
 
-Because $R_"Y,E"$ is totally bypassed by $C_"Y,E"$, we have:
+Because $R_"Y,E"$ is initially totally bypassed by $C_"Y,E"$, we have:
 
 $
 	A_"Y,v" = R_"Y,L"/r_"Y,e" = 52.84
@@ -462,20 +462,20 @@ For the simulation, we use a #qty(45.26, "mV")pp, #qty(1.69, "V") DC offset sine
 the coupling capacitor. These values were found using $V_"Y,B,Q"$, $V_"out,pp"$ and the combined
 gain of $A_"Y,v"$ and $A_"Z,v"$.
 
-We get a measured gain of #num(50.36) for #qty(500, "Hz") and #num(55.35) for #qty(10, "kHz"),
+We get a simulated gain of #num(50.36) for #qty(500, "Hz") and #num(55.35) for #qty(10, "kHz"),
 however we see a significant distortion in the waveform of $V_"Y,C"$, with flat tops and sharper
 bottoms. To reduce this distortion, we can instead use a partially-bypassed common-emitter topology.
 Adding an unbypassed #qty(3, "O") resistor effectively removes this distortion, but it reduces the
 gain to #num(25.59) at #qty(500, "Hz") and #num(26.21) at #qty(10, "kHz"). We will need to update
-$A_"Y,v"$ since the measured values are very different from the theoretical values:
+$A_"Y,v"$ since the simulated values are very different from the theoretical values:
 
 $
 	A_"Y,v" = R_"Y,L"/(r_"Y,e" + R_"Y,E1") = 22.53
 $
 
-Using this new theoretical gain, the measured gains correspond to a #qtyrange(13.58, 16.33, "%")
-increase from the theoretical gain, for #qty(500, "Hz") and #qty(10, "kHz") respectively. We also
-need to recalculate the input impedance:
+Using this new theoretical gain, the simulated gains are #qtyrange(13.58, 16.33, "%") higher than
+the theoretical gain, for #qty(500, "Hz") and #qty(10, "kHz") respectively. We also need to
+recalculate the input impedance:
 
 $
 	R_"Y,in"
