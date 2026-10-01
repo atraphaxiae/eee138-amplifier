@@ -294,7 +294,7 @@ why we are targeting a gain of #num(220), to account for these variances.
 = Second Common-Emitter Stage
 == DC Analysis
 The initial circuit diagram for the second common-emitter stage is shown in @i:y1. Note that the
-input coupling capacitor $C_"XY"$ re not shown here, but will be used. We will be using direct
+input coupling capacitor $C_"XY"$ is not shown here, but will be used. We will be using direct
 coupling to connect the output of this stage to the input of Z, so we have $V_"Y,C,Q" = V_"Z,B,Q"$.
 We are not using a voltage divider coupling since it will add more load to the common-emitter stage,
 which will reduce its gain.
@@ -507,7 +507,7 @@ $
 = First Common-Emitter Stage
 == DC Analysis
 The initial circuit diagram for the first common-emitter stage is shown in @i:x1. The input coupling
-capacitor $C_"in"$ and the output coupling capacitor $C_"XY"$ is not shown here, but will be used.
+capacitor $C_"in"$ and the output coupling capacitor $C_"XY"$ are not shown here, but will be used.
 
 #figure(
 	image("assets/x1.svg"),
@@ -616,7 +616,8 @@ $
 	R_"X,out" approx R_"X,C" = #qty(6.8, "kO")
 $
 
-Using $f_"c" = #qty(71.25, "Hz")$ from @f:fc and $R_"in"$ as the source impedance, we can finally calculate $C_"XY"$, $C_"X,E"$, and $C_"in"$:
+Using $f_"c" = #qty(71.25, "Hz")$ from @f:fc and $R_"in"$ as the source impedance, we can finally
+calculate $C_"XY"$, $C_"X,E"$, and $C_"in"$:
 
 $
 	C_"XY" = 1/(2pi (R_"X,out" + R_"Y,in") f_"c") = #qty(298.04, "nF") \
@@ -702,7 +703,7 @@ Checking the power dissipation of the resistors, the only resistor which will ov
 Instead, we can use a #qty(2, "W") resistor here.
 
 Unfortunately, some distortion has resurfaced in the output waveform, again making the peaks flatter
-and the troughs pointier. Increasing $R_"YE,1"$ to #qty(4, "O") reduces this distortion, but
+and the troughs pointier. Increasing $R_"Y,E1"$ to #qty(4, "O") reduces this distortion, but
 sacrifices some overall gain. However, since we exceeded our total gain target, we have gain to
 spare. Increasing the resistor reduces our gain to #numrange(218.21, 233.72) for
 #qtyrange(500, 10000, "Hz") signals, which is still to spec.
