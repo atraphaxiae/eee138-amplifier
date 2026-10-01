@@ -380,3 +380,14 @@ $
 We can make $R_"Y,D1"$ using a single #qty(6.8, "kO") resistor, while $R_"Y,D2"$ can be made using a
 #qty(2.2, "kO") resistor in series with a #qty(680, "O") resistor, giving us
 $R_"Y,D1" = #qty(6.8, "kO")$ and $R_"Y,D2" = #qty(2.88, "kO")$.
+
+Finally, approximating the power dissipation of the transistor, we have:
+
+$
+	P_"Q"_"Y"
+		=& V_"Y,CE,Q" I_"Y,C,Q" \
+		=& (V_"S" - V_"Y,C,Q") I_"Y,C,Q" \
+		=& #qty(23.81, "mW")
+$
+
+Which is well below the maximum power dissipation of the 2N3904 in ambient conditions @2n3904.
