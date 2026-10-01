@@ -465,16 +465,26 @@ gain of $A_"Y,v"$ and $A_"Z,v"$.
 We get a simulated gain of #num(50.36) for #qty(500, "Hz") and #num(55.35) for #qty(10, "kHz"),
 however we see a significant distortion in the waveform of $V_"Y,C"$, with flat tops and sharper
 bottoms. To reduce this distortion, we can instead use a partially-bypassed common-emitter topology.
-Adding an unbypassed #qty(3, "O") resistor effectively removes this distortion, but it reduces the
-gain to #num(25.59) at #qty(500, "Hz") and #num(26.21) at #qty(10, "kHz"). We will need to update
-$A_"Y,v"$ since the simulated values are very different from the theoretical values:
+The updated circuit diagram is shown in @i:y2.
+
+#figure(
+	image("assets/y2.svg"),
+	caption: [
+		Updated circuit diagram of the second common-emitter stage with the unbypassed emitter
+		resistor.
+	]
+) <i:y2>
+
+Using $R_"Y,E1" = #qty(3, "O")$ effectively removes the distortion, but it reduces the gain to
+#num(25.59) at #qty(500, "Hz") and #num(26.21) at #qty(10, "kHz"). We will need to update $A_"Y,v"$
+since the simulated values are very different from the theoretical values:
 
 $
 	A_"Y,v" = R_"Y,L"/(r_"Y,e" + R_"Y,E1") = 22.53
 $
 
 Using this new theoretical gain, the simulated gains are #qtyrange(13.58, 16.33, "%") higher than
-the theoretical gain, for #qty(500, "Hz") and #qty(10, "kHz") respectively. We also need to
+the theoretical gain, for #qty(500, "Hz") and #qty(10, "kHz"), respectively. We also need to
 recalculate the input impedance:
 
 $
