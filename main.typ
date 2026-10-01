@@ -409,14 +409,25 @@ $
 	A_"Y,v" = R_"Y,L"/r_"Y,e" = 52.84
 $
 
-Finally, calculating the input impedance:
+Calculating the input impedance:
 
 $
 	R_"Y,in" = R_"Y,D1" || R_"Y,D2" || r_("Y",pi) = #qty(366.08, "O")
 $
 
-With this, we can also finally calculate the output impedance of Z, and in turn, the value of its
-output coupling capacitor, assuming $R_"Y,out" approx R_"Y,C"$:
+Finally, to calculate the value of the bypass capacitor, we want its reactance to be at least ten
+times smaller than $R_"Y,E"$ at the lower-bound frequency @ce-amplifier:
+
+$
+	C_"Y,E"
+		=& 1/(2pi X_"C"_"Y,E" f) \
+		=& 1/(2pi (R_"Y,E"/10) f) \
+		=& #qty(37.14, "uF")
+$
+
+We can use a standard value of $C_"Y,E" = #qty(47, "uF")$ instead. We can also finally calculate the
+output impedance of Z, and in turn, the value of its output coupling capacitor, assuming $R_"Y,out"
+approx R_"Y,C"$:
 
 $
 	R_"Z,out"
@@ -441,4 +452,6 @@ $
 	C_"out" = 1/(2pi (R_"Z,out" + R_"L") f_"c") = #qty(110.31, "uF")
 $
 
-We can use a standard value of #qty(150, "uF") instead.
+We can use a standard value of $C_"out" = #qty(150, "uF")$ instead.
+
+== Simulation
