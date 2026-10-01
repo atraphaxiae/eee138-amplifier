@@ -197,7 +197,7 @@ $
 Then we can calculate the resistances of each emitter-balancing resistor @emitter-balancing:
 
 $
-	R_"Z,EB" = (Delta V_"Z,CE")/(Delta I_"Z,E") = #qty(732.6, "mO")
+	R_"Z,EB" = (Delta V_"Z,BE")/(Delta I_"Z,E") = #qty(732.6, "mO")
 $
 
 #qty(1, "O") resistors are much more common, so we instead use $R_"Z,EB" = #qty(1, "O")$. We can now
@@ -216,11 +216,10 @@ $
 Assuming that $I_"Z,C" >> I_"Z,B"$, we can use $I_"Z,C,Q" = I_"Z,E,Q"$. From the datasheet @2n4401,
 this collector current corresponds to $V_"Z,BE,Q" = 0.75$ #footnote[The datasheet only provides
 a $V_"BE"$ chart for $V_"CE" = #qty(10, "V")$, so this is an approximation.]. However, $beta$ is not
-given for this particular current, so we use $beta_Z = 100$, which corresponds to the next test
-current above $I_"Z,C,Q"$. From this we can calculate the total base current:
+given for this particular current, so we use $beta_"Z" = 100$, which is the minimum $beta$ of the next test current above $I_"Z,C,Q"$. From this we can calculate the total base current:
 
 $
-	I_"Z,B,Q,total" = (3I_"Z,E,Q")/(beta_Z + 1) = #qty(2.30, "mA")
+	I_"Z,B,Q,total" = (3I_"Z,E,Q")/(beta_"Z" + 1) = #qty("2.30", "mA")
 $
 
 Finally, we can get the voltage at the base:
@@ -259,7 +258,7 @@ Calculating the input impedance:
 
 $
 	R_"Z,in"
-		=& r_"Z,pi"/3 + (beta_"Z" + 1)(R_"Z,EB"/3 + R_"Z,L") \
+		=& r_("Z",pi)/3 + (beta_"Z" + 1)(R_"Z,EB"/3 + R_"Z,L") \
 		=& #qty(549.70, "O")
 $
 
@@ -275,3 +274,109 @@ output coupling capacitor value of #qty(470, "uF").
 At both frequencies, the measured gain is 0.90. This corresponds to a #qty(-2.17, "%") discrepancy
 between the theoretical and actual gain value, which is acceptable. This is the reason why we are
 targeting a gain of 220, to account for these variances.
+
+= Second Common-Emitter Stage
+== DC Analysis
+The initial circuit diagram for the second common-emitter stage is shown in @i:y1. Note that the
+input coupling capacitor $C_"XY"$ is not shown here, but will be used. We will be using direct
+coupling to connect the output of this stage to the input of Z, so we have $V_"Y,C,Q" = V_"Z,B,Q"$.
+We are not using a voltage divider coupling since it will add more load to the common-emitter stage,
+which will reduce its gain.
+
+#figure(
+	image("assets/y1.svg"),
+	caption: [
+		Initial circuit diagram of the second common-emitter stage.
+	]
+) <i:y1>
+
+We want the gain of this stage to be as high as possible to remove some of the work from the first
+common-emitter stage, which has to deal with the #qty(1000, "O") source impedance. Using the gain of
+stage Z, we can calculate the required output voltage for this stage:
+
+$
+	V_"Y,C,pp" = V_"out,pp"/A_"Z,v" = #qty(2.39, "V")"pp" \
+	V_"Y,C,min" = V_"Y,C,Q" - V_"Y,C,pp"/2 = #qty(2.73, "V") \
+	V_"Y,C,max" = V_"Y,C,Q" + V_"Y,C,pp"/2 = #qty(5.12, "V")
+$
+
+Doing KCL on $V_"Y,C"$:
+
+$
+	I_"Y,C" = (V_"S" - V_"Y,C")/R_"Y,C" - I_"Z,B"
+$
+
+To avoid clipping, the transistor must never cut-off. This is at most risk of happening when
+$V_"Y,C" = V_"Y,C,max"$, where $R_"Y,C"$ is passing the least amount of current, and most of it is
+going into Z's transistor bases. At this point we have:
+
+$
+	I_"Z,E,total,max"
+		=& (V_"Z,E,Q" + V_"out,pp"/2)/R_"Z,E" + I_"out,max"  \
+		=& #qty(452.58, "mA")
+$
+
+$
+	I_"Z,B,total,max" = I_"Z,E,total,max"/(beta_"Z" + 1) = #qty(4.48, "mA")
+$
+
+For no cut-off, we want $I_"Y,C" >= 0$ here:
+
+$
+	I_"Y,C" >=& 0 \
+	(V_"S" - V_"Y,C")/R_"Y,C" - I_"Z,B" >=& 0 \
+	(V_"S" - V_"Y,C,max")/R_"Y,C" >=& I_"Z,B,total,max" \
+	R_"Y,C" <=& (V_"S" - V_"Y,C,max")/I_"Z,B,total,max" \
+	R_"Y,C" <=& #qty(196.43, "O")
+$
+
+We can construct $R_"Y,C"$ using a #qty(150, "O") resistor. We want a large margin here so that we
+can supply enough current to account for discrepancies in $beta_"Z"$. Then, we can find the
+collector current:
+
+$
+	I_"Y,C,Q" = (V_"S" - V_"Y,C,Q")/R_"Y,C" - I_"Z,B,Q,total" = #qty("11.50", "mA")
+$
+
+The 2N3904 is a good transistor for this stage as it has a higher $beta$ and is more optimized for
+lower currents than the 2N4401, and has a maximum collector current of #qty(200, "mA"). From the
+datasheet @2n3904 and our $I_"Y,C,Q"$ we have $beta_"Y"$ ranging from 100 to 300. For our purposes,
+we set $beta_"Y" = 200$, which is the midpoint of these values. We also have
+$V_"Y,BE,Q" = #qty(0.7, "V")$ here #footnote[The datasheet only provides a $V_"BE"$ chart for
+$V_"CE" = #qty(1, "V")$, so this is yet another approximation.]. We can then calculate the base and
+emitter currents:
+
+$
+	I_"Y,B,Q" = I_"Y,C,Q"/beta_"Y" = #qty("57.50", "uA") \
+	I_"Y,E,Q" = I_"Y,C,Q" + I_"Y,B,Q" = #qty(11.56, "mA")
+$
+
+Using $V_"Y,E,Q" = #qty(1, "V")$ @ce-amplifier, we can calculate the emitter resistance:
+
+$
+	R_"Y,E" = V_"Y,E,Q"/I_"Y,E,Q" = #qty(86.51, "O")
+$
+
+We can construct $R_"Y,E"$ using a #qty(150, "O") resistor in parallel with a #qty(200, "O")
+resistor, giving us a total $R_"Y,E" = #qty(85.71, "O")$. We will need to recalculate $V_"Y,E,Q"$,
+which yields $V_"Y,E,Q" = I_"Y,E,Q" R_"Y,E" = #qty(990.81, "mV")$. Then we have the base voltage
+$V_"Y,B,Q" = V_"Y,E,Q" + V_"Y,BE,Q" = #qty(1.69, "V")$.
+
+Next we compute for the values of the bias divider resistors. We want $I_"Y,D2,Q"$ to be ten times
+the value of $I_"Y,B,Q"$, so:
+
+$
+	I_"Y,D2,Q" = 10I_"Y,B,Q" = #qty("575.00", "uA") \
+	I_"Y,D1,Q" = I_"Y,D2,Q" + I_"Y,B,Q" = #qty("632.50", "uA")
+$
+
+Calculating the resistor values:
+
+$
+	R_"Y,D1" = (V_"S" - V_"Y,B,Q")/I_"Y,D1,Q" = #qty(6.81, "kO") \
+	R_"Y,D2" = V_"Y,B,Q"/I_"Y,D2,Q" = #qty(2.94, "kO")
+$
+
+We can make $R_"Y,D1"$ using a single #qty(6.8, "kO") resistor, while $R_"Y,D2"$ can be made using a
+#qty(2.2, "kO") resistor in series with a #qty(680, "O") resistor, giving us
+$R_"Y,D1" = #qty(6.8, "kO")$ and $R_"Y,D2" = #qty(2.88, "kO")$.

@@ -8,7 +8,12 @@
 !/refs.yaml
 
 !/assets/
+!/assets/y1.json
+!/assets/y1.svg
 !/assets/z1.json
 !/assets/z1.svg
 !/assets/z2.json
 !/assets/z2.svg
+
+!/ltspice/
+!/ltspice/z.asc

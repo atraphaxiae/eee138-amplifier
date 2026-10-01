@@ -1,3 +1,10 @@
+2n3904:
+  type: reference
+  title: 2N3903 - General Purpose Transistors
+  author: Onsemi
+  date: 2021-08
+  url: https://www.onsemi.com/download/data-sheet/pdf/2n3903-d.pdf
+
 2n4401:
   type: reference
   title: 2N4401 - General Purpose Transistors NPN Silicon
@@ -10,4 +17,11 @@ emitter-balancing:
   title: Parallel Transistors Current Sharing
   url:
     value: https://electronics.stackexchange.com/questions/440239/parallel-transistors-current-sharing
-    date: 2026-09
+    date: 2026-09-30
+
+ce-amplifier:
+  type: web
+  title: Common Emitter Amplifier and Bipolar Transistor CE Amplifiers
+  url:
+    value: https://www.electronics-tutorials.ws/amplifier/amp_2.html
+    date: 2026-10-01
