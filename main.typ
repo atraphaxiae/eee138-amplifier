@@ -28,6 +28,21 @@
 	fill: (x, y) => if y > 0 and calc.rem(y, 2) == 0 { rgb("#efefef") },
 )
 
+#let dtable = table.with(
+	columns: (6em, auto),
+	align: (left, right),
+	inset: (x: 8pt, y: 4pt),
+	stroke: (x, y) => {
+		if x == 1 {
+			(right: 0.5pt)
+		}
+		if y <= 1 {
+			(top: 0.5pt)
+		}
+	},
+	fill: (x, y) => if y > 0 and calc.rem(y, 2) == 0  { rgb("#efefef") },
+)
+
 #let vstable = table.with(
 	columns: (6em, auto),
 	align: (x, y) => if x == 0 { left } else { right },
@@ -625,3 +640,46 @@ results we want, which are simulated gains of #num("9.70") for #qty(500, "Hz") a
 
 Also, luckily, the fully-bypassed common-emitter topology didn't distort the signal here, so we can
 keep it.
+
+= Full Amplifier Simulation
+The complete circuit diagram is shown in @i:full, while the component values and models are listed
+in @t:full.
+
+#figure(
+	image("assets/full.svg"),
+	caption: [Full circuit diagram of the amplifier.],
+	scope: "parent"
+) <i:full>
+
+#figure(
+	dtable(
+		columns: 4,
+		table.header[Component][Value/Model][Component][Value/Model],
+		$Q_"X"$, [2N3904],
+		$Q_"Y"$, [2N3904],
+		$Q_"Z1"$, [2N4401],
+		$Q_"Z2"$, [2N4401],
+		$Q_"Z3"$, [2N4401],
+		none, none,
+		$R_"X,D1"$, qty(61, "kO"),
+		$R_"X,D2"$, qty(25.1, "kO"),
+		$R_"X,C"$, qty(6.8, "kO"),
+		$R_"X,E"$, qty(2.2, "kO"),
+		$C_"in"$, qty(680, "nF"),
+		$C_"X,E"$, qty(15, "uF"),
+		$C_"XY"$, qty(330, "nF"),
+		none, none,
+		$R_"Y,D1"$, qty(6.8, "kO"),
+		$R_"Y,D2"$, qty(2.88, "kO"),
+		$R_"Y,C"$, qty(150, "O"),
+		$R_"Y,E1"$, qty(3, "O"),
+		$R_"Y,E2"$, qty(85.71, "O"),
+		$C_"Y,E"$, qty(330, "uF"),
+		$R_"Z,EB1"$, qty(1, "O"),
+		$R_"Z,EB2"$, qty(1, "O"),
+		$R_"Z,EB3"$, qty(1, "O"),
+		$R_"Z,E"$, qty(13.33, "O"),
+		$C_"out"$, qty(330, "uF")
+	),
+	caption: [Component Values and Models of the Amplifier]
+) <t:full>
