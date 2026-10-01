@@ -1,7 +1,7 @@
 #import "@preview/charged-ieee:0.1.4": ieee
 
 #import "@preview/fletcher:0.5.8": diagram, node, edge
-#import "@preview/unify:0.8.1": num, qty, qtyrange
+#import "@preview/unify:0.8.1": num, numrange, qty, qtyrange
 
 #show: ieee.with(
 	title: "Two-Stage Common-Emitter Amplifier Design",
@@ -294,7 +294,7 @@ why we are targeting a gain of #num(220), to account for these variances.
 = Second Common-Emitter Stage
 == DC Analysis
 The initial circuit diagram for the second common-emitter stage is shown in @i:y1. Note that the
-input coupling capacitor $C_"XY"$ is not shown here, but will be used. We will be using direct
+input coupling capacitor $C_"XY"$ re not shown here, but will be used. We will be using direct
 coupling to connect the output of this stage to the input of Z, so we have $V_"Y,C,Q" = V_"Z,B,Q"$.
 We are not using a voltage divider coupling since it will add more load to the common-emitter stage,
 which will reduce its gain.
@@ -642,8 +642,8 @@ Also, luckily, the fully-bypassed common-emitter topology didn't distort the sig
 keep it.
 
 = Full Amplifier Simulation
-The complete circuit diagram is shown in @i:full, while the component values and models are listed
-in @t:full.
+The complete circuit diagram is shown in @i:full, while the component values and models computed up
+to this point are listed in @t:full. Assume #qty(0.25, "W") resistors.
 
 #figure(
 	image("assets/full.svg"),
@@ -683,3 +683,46 @@ in @t:full.
 	),
 	caption: [Component Values and Models of the Amplifier]
 ) <t:full>
+
+Simulating the circuit with the computed values yields us a gain of #num("232.20") for a
+#qty(500, "Hz") signal, and a gain of #num(243.34) for a #qty(10, "kHz") signal, exceeding the
+#num(220) total gain target by #qtyrange(5.55, 10.61, "%"), which satisfies the gain requirement in
+the specifications.
+
+The DC output voltage, which we measure at $V_"Z,E"$, is at #qty(3.34, "V"), overshooting our
+#qty(3.1, "V") target by #qty(7.74, "%"), but is still within the DC output voltage range in the
+specifications.
+
+Using the power drawn from the supply at the DC operating point, we can approximate the power
+dissipation of the entire amplifier, which is #qty(1.56, "W"). This is below the maximum power
+dissipation stated in the specifications.
+
+Checking the power dissipation of the resistors, the only resistor which will overheat is $R_"Z,E"$, with a dissipation of #qty(822.61, "mW"). Here, the series #qty(10, "O") resistor is dissipating
+#qty(617.11, "mW"), which is a problem since we're using #qty(0.25, "W") resistors by default.
+Instead, we can use a #qty(2, "W") resistor here.
+
+Unfortunately, some distortion has resurfaced in the output waveform, again making the peaks flatter
+and the troughs pointier. Increasing $R_"YE,1"$ to #qty(4, "O") reduces this distortion, but
+sacrifices some overall gain. However, since we exceeded our total gain target, we have gain to
+spare. Increasing the resistor reduces our gain to #numrange(218.21, 233.72) for
+#qtyrange(500, 10000, "Hz") signals, which is still to spec.
+
+Finally, there is no visible clipping in the output waveform at either frequency limit. In summary,
+the only changes needed are to use a #qty(2, "W") resistor for the series #qty(10, "O") resistor of
+$R_"Z,E"$, as well as use a #qty(4, "O") resistor instead for $R_"Y,E1"$. The list of changed
+components is shown in @t:changed.
+
+#figure(
+	table(
+		columns: 2,
+		table.header[Component][New Value/Model],
+		$R_"Z,E"$,
+		[
+			#qty(10, "O") #qty(2, "W") resistor, \
+			series with three parallel \
+			#qty(10, "O") #qty(0.25, "W") resistors
+		],
+		$R_"Y,E1"$, qty(4, "O")
+	),
+	caption: [List of Changed Components]
+) <t:changed>
