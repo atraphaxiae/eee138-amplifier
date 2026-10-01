@@ -474,4 +474,14 @@ $
 $
 
 Using this new theoretical gain, the measured gains correspond to a #qtyrange(13.58, 16.33, "%")
-increase from the theoretical gain, for #qty(500, "Hz") and #qty(10, "kHz") respectively.
+increase from the theoretical gain, for #qty(500, "Hz") and #qty(10, "kHz") respectively. We also
+need to recalculate the input impedance:
+
+$
+	R_"Y,in"
+		=& R_"Y,D1" || R_"Y,D2" || [r_("Y",pi) + (beta_"Y" + 1) R_"Y,E1"] \
+		=& #qty(694.74, "O")
+$
+
+= First Common-Emitter Stage
+== DC Analysis
