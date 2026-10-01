@@ -479,7 +479,7 @@ $
 	A_"Y,v" = R_"Y,L"/(r_"Y,e" + R_"Y,E1") = 22.53
 $
 
-Using this new theoretical gain, the simulated gains are #qtyrange(13.58, 16.33, "%") higher than
+Using this new theoretical gain, the simulated gains are #qtyrange(8.48, 9.81, "%") lower than
 the theoretical gain, for #qty(500, "Hz") and #qty(10, "kHz"), respectively. We also need to
 recalculate the input impedance:
 
@@ -613,3 +613,15 @@ We can use a #qty(330, "nF") capacitor for $C_"XY"$, a #qty(15, "uF") capacitor 
 a #qty(680, "nF") capacitor for $C_"in"$.
 
 == Simulation
+For the simulation, we simply use a purely AC #qty(10, "mV")pp sine wave at #qty(500, "Hz") and
+#qty(10, "kHz") as the input to $V_"X,B"$. We get a simulated gain of #num(16.74) for
+#qty(500, "Hz") and #num(10.68) for #qty(10, "kHz"). The larger gain for #qty(500, "Hz") is a
+problem, and it puts the gain of the system to #num(346.98).
+
+However, this is simply a consequence of measuring $V_"X,C"$, where the output coupling capacitor
+$C_"XY"$ hasn't done its job yet as a high pass filter. Measuring from $V_"Y,B"$ gives us the
+results we want, which are simulated gains of #num("9.70") for #qty(500, "Hz") and #num(10.59) for
+#qty(10, "kHz"). These values are #qtyrange(0.19, 8.58, "%") lower than the theoretical gain.
+
+Also, luckily, the fully-bypassed common-emitter topology didn't distort the signal here, so we can
+keep it.
