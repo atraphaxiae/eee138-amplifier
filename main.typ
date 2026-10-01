@@ -386,8 +386,8 @@ Finally, approximating the power dissipation of the transistor, we have:
 $
 	P_"Q"_"Y"
 		=& V_"Y,CE,Q" I_"Y,C,Q" \
-		=& (V_"S" - V_"Y,C,Q") I_"Y,C,Q" \
-		=& #qty(23.81, "mW")
+		=& (V_"Y,C,Q" - V_"Y,E,Q") I_"Y,C,Q" \
+		=& #qty("33.80", "mW")
 $
 
 Which is well below the maximum power dissipation of the 2N3904 in ambient conditions @2n3904.
@@ -420,8 +420,8 @@ coupling capacitor, assuming $R_"Y,out" approx R_"Y,C"$:
 
 $
 	R_"Z,out"
-		=& R_"Z,E" || [R_"Y,out" + (r_"Z,e" + R_"Z,EB")/3] \
-		=& #qty(12.25, "O")
+		=& R_"Z,E" || [R_"Z,EB"/3 + (R_"Y,out" + r_("Z",pi)/3)/(beta_"Z" + 1)] \
+		=& #qty(1.68, "O")
 $
 
 Which is much less than the output impedance limit from the specification. We can then calculate the
@@ -438,12 +438,13 @@ $ <f:fc>
 Then finally calculating the output coupling capacitor:
 
 $
-	C_"out" = 1/(2pi (R_"Z,out" + R_"L") f_"c") = #qty(110.31, "uF")
+	C_"out" = 1/(2pi (R_"Z,out" + R_"L") f_"c") = #qty(230.76, "uF")
 $
 
-We can use a standard value of $C_"out" = #qty(150, "uF")$ instead. Finally, to calculate the value
-of the bypass capacitor, we want its reactance to be at least ten times smaller than $R_"Y,E"$ at
-the lower-bound frequency @ce-amplifier. Using the $f = f_"c"$ from @f:fc, we have:
+We can use a standard value of $C_"out" = #qty(330, "uF")$ instead, rounding up since a higher value
+gives a lower attenuation. Finally, to calculate the value of the bypass capacitor, we want its
+reactance to be at least ten times smaller than $R_"Y,E"$ at the lower-bound frequency
+@ce-amplifier. Using the $f = f_"c"$ from @f:fc, we have:
 
 $
 	C_"Y,E"
@@ -452,7 +453,8 @@ $
 		=& #qty(260.62, "uF")
 $
 
-We can use a standard value of $C_"Y,E" = #qty(47, "uF")$ instead.
+We can use a standard value of $C_"Y,E" = #qty(330, "uF")$ instead, rounding up for the same reasons
+as above.
 
 == Simulation
 For the simulation, we use a #qty(45.26, "mV")pp, #qty(1.69, "V") DC offset sine wave at
