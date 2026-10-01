@@ -446,10 +446,7 @@ reactance to be at least ten times smaller than $R_"Y,E"$ at the lower-bound fre
 @ce-amplifier. Using the $f = f_"c"$ from @f:fc, we have:
 
 $
-	C_"Y,E"
-		=& 1/(2pi X_"C"_"Y,E" f_"c") \
-		=& 1/(2pi (R_"Y,E"/10) f_"c") \
-		=& #qty(260.62, "uF")
+	C_"Y,E" = 1/(2pi X_"C"_"Y,E" f_"c") = 1/(2pi (R_"Y,E"/10) f_"c") = #qty(260.62, "uF")
 $
 
 We can use a standard value of $C_"Y,E" = #qty(330, "uF")$ instead, rounding up for the same reasons
@@ -554,8 +551,8 @@ $R_"X,E" = #qty(2.2, "kO")$. Recalculating the emitter voltage, we get
 $V_"X,E,Q" = I_"X,E,Q" R_"X,E" = #qty(963.38, "mV")$. Then we can compute the base voltage
 $V_"X,B,Q" = V_"X,E,Q" + V_"X,BE,Q" = #qty(1.61, "V")$.
 
-Next we compute for the values of the bias divider resistors, using the same ten times base current
-principle:
+Next we compute for the values of the bias divider resistors, using the same ten-times-base-current
+principle @ce-amplifier:
 
 $
 	I_"X,D2,Q" = 10I_"X,B,Q" = #qty("61.70", "uA") \
@@ -584,3 +581,31 @@ $
 
 This is significantly lower than the maximum power dissipation for the 2N3904 in ambient conditions
 @2n3904.
+
+== AC Analysis
+First we calculate the transconductance and internal resistances of the transistor at room
+temperature:
+
+$
+	g_"X,m" = I_"X,C,Q"/V_"T" = #qty("16.80", "mS") \
+	r_"X,e" = 1/g_"X,m" = #qty(59.53, "O") \
+	r_("X",pi) = beta_"X" r_"X,e" = #qty(4.17, "kO")
+$
+
+Calculating the input and output impedances:
+
+$
+	R_"X,in" = R_"X,D1" || R_"X,D2" || r_("X",pi) = #qty(3.41, "kO") \
+	R_"X,out" approx R_"X,C" = #qty(6.95, "kO")
+$
+
+Using $f_"c" = #qty(71.25, "Hz")$ from @f:fc and $R_"in"$ as the source impedance, we can finally calculate $C_"XY"$, $C_"X,E"$, and $C_"in"$:
+
+$
+	C_"XY" = 1/(2pi (R_"X,out" + R_"Y,in") f_"c") = #qty(292.19, "nF") \
+	C_"X,E" = 1/(2pi X_"C"_"X,E" f_"c") = 1/(2pi (R_"X,E")/10 f_"c") = #qty(10.15, "uF")
+	C_"in" = 1/(2pi (R_"in" + R_"X,in") f_"c") = #qty(506.52, "nF")
+$
+
+We can use a #qty(330, "nF") capacitor for $C_"XY"$, a #qty(15, "uF") capacitor for $C_"X,E"$, and
+a #qty(680, "nF") capacitor for $C_"in"$.
