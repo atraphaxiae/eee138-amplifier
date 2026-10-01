@@ -216,7 +216,8 @@ $
 Assuming that $I_"Z,C" >> I_"Z,B"$, we can use $I_"Z,C,Q" = I_"Z,E,Q"$. From the datasheet @2n4401,
 this collector current corresponds to $V_"Z,BE,Q" = 0.75$ #footnote[The datasheet only provides
 a $V_"BE"$ chart for $V_"CE" = #qty(10, "V")$, so this is an approximation.]. However, $beta$ is not
-given for this particular current, so we use $beta_"Z" = 100$, which is the minimum $beta$ of the next test current above $I_"Z,C,Q"$. From this we can calculate the total base current:
+given for this particular current, so we use $beta_"Z" = 100$, which is the minimum $beta$ of the
+next test current above $I_"Z,C,Q"$. From this we can calculate the total base current:
 
 $
 	I_"Z,B,Q,total" = (3I_"Z,E,Q")/(beta_"Z" + 1) = #qty("2.30", "mA")
@@ -285,9 +286,7 @@ which will reduce its gain.
 
 #figure(
 	image("assets/y1.svg"),
-	caption: [
-		Initial circuit diagram of the second common-emitter stage.
-	]
+	caption: [Initial circuit diagram of the second common-emitter stage.]
 ) <i:y1>
 
 We want the gain of this stage to be as high as possible to remove some of the work from the first
@@ -495,3 +494,93 @@ $
 
 = First Common-Emitter Stage
 == DC Analysis
+The initial circuit diagram for the first common-emitter stage is shown in @i:x1. The input coupling
+capacitor $C_"in"$ and the output coupling capacitor $C_"XY"$ is not shown here, but will be used.
+
+#figure(
+	image("assets/x1.svg"),
+	caption: [Initial circuit diagram of the first common-emitter stage.]
+) <i:x1>
+
+We can calculate the target gain and output voltage of this stage from $V_"in,pp"$ and the gains of
+the latter two stages:
+
+$
+	A_"X,v" = A_"v"/(A_"Y,v" A_"Z,v") = 10.61 \
+	V_"X,C,pp" = A_"X,v" V_"in,pp" = #qty("106.10", "mV")"pp" \
+$
+
+Since we are going to use an output coupling capacitor for this stage, we can pretty much use any
+DC offset at $V_"X,C"$. For maximum leeway on both sides, we use $V_"X,C,Q" = #qty(3, "V")$, which
+is half the supply voltage. Then the minimum and maximum output voltages are:
+
+$
+	V_"X,C,min" = V_"X,C,Q" - V_"X,C,pp"/2 = #qty(2.95, "V") \
+	V_"X,C,max" = V_"X,C,Q" + V_"X,C,pp"/2 = #qty(3.05, "V")
+$
+
+At these voltages clipping is not a concern at all. We can find $I_"X,C,Q"$ and $R_"X,C"$ using the
+target gain, noting that we initially use a fully-bypassed topology:
+
+$
+	A_"X,v" =& R_"X,L"/r_"X,e" \
+	A_"X,v" =& (R_"X,C" || R_"Y,in")/(V_"T"/I_"X,C,Q") \
+	A_"X,v" =& ((V_"S" - V_"X,C,Q")/I_"X,C,Q" || R_"Y,in")/(V_"T"/I_"X,C,Q") \
+	I_"X,C,Q" =& #qty(431.73, "uA")
+$
+
+$
+	R_"X,C" = (V_"S" - V_"X,C,Q")/I_"X,C,Q" = #qty(6.95, "kO")
+$
+
+Unfortunately, the datasheet doesn't provide a $beta$ value for our collector current. Instead, we
+approximate it by using the $beta$ for the next test current above $I_"X,C,Q"$, which gives us
+$beta_"X" = 70$. $V_"BE"$ is also not provided at microamp levels, so we use the lowest value
+$V_"X,BE,Q" = #qty(0.65, "V")$. Then, calculating the base and emitter currents:
+
+$
+	I_"X,B,Q" = I_"X,C,Q"/beta_"X" = #qty(6.17, "uA") \
+	I_"X,E,Q" = I_"X,C,Q" + I_"X,B,Q" = #qty("437.90", "uA")
+$
+
+Initially using $V_"X,E,Q" = #qty(1, "V")$, we can calculate the emitter resistance:
+
+$
+	R_"X,E" = V_"X,E,Q"/I_"X,E,Q" = #qty(2.28, "kO")
+$
+
+We can make $R_"X,E"$ using a single #qty(2.2, "kO") resistor, giving us
+$R_"X,E" = #qty(2.2, "kO")$. Recalculating the emitter voltage, we get
+$V_"X,E,Q" = I_"X,E,Q" R_"X,E" = #qty(963.38, "mV")$. Then we can compute the base voltage
+$V_"X,B,Q" = V_"X,E,Q" + V_"X,BE,Q" = #qty(1.61, "V")$.
+
+Next we compute for the values of the bias divider resistors, using the same ten times base current
+principle:
+
+$
+	I_"X,D2,Q" = 10I_"X,B,Q" = #qty("61.70", "uA") \
+	I_"X,D1,Q" = I_"X,D2,Q" + I_"X,B,Q" = #qty(67.87, "uA")
+$
+
+Calculating the resistor values:
+
+$
+	R_"X,D1" = (V_"S" - V_"X,B,Q")/I_"X,D1,Q" = #qty(64.68, "kO") \
+	R_"X,D2" = V_"X,B,Q"/I_"X,D2,Q" = #qty(26.09, "kO")
+$
+
+We can construct $R_"X,D1"$ using #qty(51, "kO"), #qty(10, "kO"), and #qty(3.3, "kO") resistors in
+series, while $R_"X,D2"$ can be made using a #qty(2.2, "kO") resistor in series with two parallel
+#qty(47, "kO") resistors, giving us $R_"X,D1" = #qty(64.3, "kO")$ and $R_"X,D2" = #qty(25.7, "kO")$.
+
+Finally, approximating the power dissipation of the transistor, we have:
+
+$
+	P_"Q"_"X"
+		=& V_"X,CE,Q" I_"X,C,Q" \
+		=& (V_"X,C,Q" - V_"X,E,Q") I_"X,C,Q" \
+		=& #qty(879.27, "uW")
+$
+
+This is significantly lower than the maximum power dissipation for the 2N3904 in ambient conditions
+@2n3904.
