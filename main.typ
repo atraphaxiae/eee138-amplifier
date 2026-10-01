@@ -458,7 +458,7 @@ For the simulation, we use a #qty(45.26, "mV")pp, #qty(1.69, "V") DC offset sine
 the coupling capacitor. These values were found using $V_"Y,B,Q"$, $V_"out,pp"$ and the combined
 gain of $A_"Y,v"$ and $A_"Z,v"$.
 
-We get a simulated gain of #num(50.36) for #qty(500, "Hz") and #num(55.35) for #qty(10, "kHz"),
+We get a simulated gain of #num(41.04) for #qty(500, "Hz") and #num(43.59) for #qty(10, "kHz"),
 however we see a significant distortion in the waveform of $V_"Y,C"$, with flat tops and sharper
 bottoms. To reduce this distortion, we can instead use a partially-bypassed common-emitter topology.
 The updated circuit diagram is shown in @i:y2.
@@ -472,7 +472,7 @@ The updated circuit diagram is shown in @i:y2.
 ) <i:y2>
 
 Using $R_"Y,E1" = #qty(3, "O")$ effectively removes the distortion, but it reduces the gain to
-#num(25.59) at #qty(500, "Hz") and #num(26.21) at #qty(10, "kHz"). We will need to update $A_"Y,v"$
+#num(20.32) at #qty(500, "Hz") and #num(20.62) at #qty(10, "kHz"). We will need to update $A_"Y,v"$
 since the simulated values are very different from the theoretical values:
 
 $
@@ -530,45 +530,47 @@ $
 	R_"X,C" = (V_"S" - V_"X,C,Q")/I_"X,C,Q" = #qty(6.95, "kO")
 $
 
+We can use a standard $R_"X,C" = #qty(6.8, "kO")$ instead. Recalculating the collector current we
+get $I_"X,C,Q" = #qty(441.18, "uA")$.
+
 Unfortunately, the datasheet doesn't provide a $beta$ value for our collector current. Instead, we
 approximate it by using the $beta$ for the next test current above $I_"X,C,Q"$, which gives us
 $beta_"X" = 70$. $V_"BE"$ is also not provided at microamp levels, so we use the lowest value
 $V_"X,BE,Q" = #qty(0.65, "V")$. Then, calculating the base and emitter currents:
 
 $
-	I_"X,B,Q" = I_"X,C,Q"/beta_"X" = #qty(6.17, "uA") \
-	I_"X,E,Q" = I_"X,C,Q" + I_"X,B,Q" = #qty("437.90", "uA")
+	I_"X,B,Q" = I_"X,C,Q"/beta_"X" = #qty(6.30, "uA") \
+	I_"X,E,Q" = I_"X,C,Q" + I_"X,B,Q" = #qty("447.48", "uA")
 $
 
 Initially using $V_"X,E,Q" = #qty(1, "V")$, we can calculate the emitter resistance:
 
 $
-	R_"X,E" = V_"X,E,Q"/I_"X,E,Q" = #qty(2.28, "kO")
+	R_"X,E" = V_"X,E,Q"/I_"X,E,Q" = #qty(2.23, "kO")
 $
 
-We can make $R_"X,E"$ using a single #qty(2.2, "kO") resistor, giving us
-$R_"X,E" = #qty(2.2, "kO")$. Recalculating the emitter voltage, we get
-$V_"X,E,Q" = I_"X,E,Q" R_"X,E" = #qty(963.38, "mV")$. Then we can compute the base voltage
-$V_"X,B,Q" = V_"X,E,Q" + V_"X,BE,Q" = #qty(1.61, "V")$.
+We can use a standard $R_"X,E" = #qty(2.2, "kO")$ instead. Recalculating the emitter voltage, we get
+$V_"X,E,Q" = I_"X,E,Q" R_"X,E" = #qty(984.46, "mV")$. Then we can compute the base voltage
+$V_"X,B,Q" = V_"X,E,Q" + V_"X,BE,Q" = #qty(1.63, "V")$.
 
 Next we compute for the values of the bias divider resistors, using the same ten-times-base-current
 principle @ce-amplifier:
 
 $
-	I_"X,D2,Q" = 10I_"X,B,Q" = #qty("61.70", "uA") \
-	I_"X,D1,Q" = I_"X,D2,Q" + I_"X,B,Q" = #qty(67.87, "uA")
+	I_"X,D2,Q" = 10I_"X,B,Q" = #qty("63.00", "uA") \
+	I_"X,D1,Q" = I_"X,D2,Q" + I_"X,B,Q" = #qty("69.30", "uA")
 $
 
 Calculating the resistor values:
 
 $
-	R_"X,D1" = (V_"S" - V_"X,B,Q")/I_"X,D1,Q" = #qty(64.68, "kO") \
-	R_"X,D2" = V_"X,B,Q"/I_"X,D2,Q" = #qty(26.09, "kO")
+	R_"X,D1" = (V_"S" - V_"X,B,Q")/I_"X,D1,Q" = #qty(63.06, "kO") \
+	R_"X,D2" = V_"X,B,Q"/I_"X,D2,Q" = #qty(25.87, "kO")
 $
 
-We can construct $R_"X,D1"$ using #qty(51, "kO"), #qty(10, "kO"), and #qty(3.3, "kO") resistors in
-series, while $R_"X,D2"$ can be made using a #qty(2.2, "kO") resistor in series with two parallel
-#qty(47, "kO") resistors, giving us $R_"X,D1" = #qty(64.3, "kO")$ and $R_"X,D2" = #qty(25.7, "kO")$.
+We can construct $R_"X,D1"$ using a #qty(51, "kO") resistor in series with a #qty(10, "kO")
+resistor, while $R_"X,D2"$ can be made using a #qty(20, "kO") resistor in series with a
+#qty(5.1, "kO") resistor, giving us $R_"X,D1" = #qty(61, "kO")$ and $R_"X,D2" = #qty(25.1, "kO")$.
 
 Finally, approximating the power dissipation of the transistor, we have:
 
@@ -576,7 +578,7 @@ $
 	P_"Q"_"X"
 		=& V_"X,CE,Q" I_"X,C,Q" \
 		=& (V_"X,C,Q" - V_"X,E,Q") I_"X,C,Q" \
-		=& #qty(879.27, "uW")
+		=& #qty(889.22, "uW")
 $
 
 This is significantly lower than the maximum power dissipation for the 2N3904 in ambient conditions
@@ -587,25 +589,27 @@ First we calculate the transconductance and internal resistances of the transist
 temperature:
 
 $
-	g_"X,m" = I_"X,C,Q"/V_"T" = #qty("16.80", "mS") \
-	r_"X,e" = 1/g_"X,m" = #qty(59.53, "O") \
-	r_("X",pi) = beta_"X" r_"X,e" = #qty(4.17, "kO")
+	g_"X,m" = I_"X,C,Q"/V_"T" = #qty("17.17", "mS") \
+	r_"X,e" = 1/g_"X,m" = #qty(58.25, "O") \
+	r_("X",pi) = beta_"X" r_"X,e" = #qty(4.08, "kO")
 $
 
 Calculating the input and output impedances:
 
 $
-	R_"X,in" = R_"X,D1" || R_"X,D2" || r_("X",pi) = #qty(3.41, "kO") \
-	R_"X,out" approx R_"X,C" = #qty(6.95, "kO")
+	R_"X,in" = R_"X,D1" || R_"X,D2" || r_("X",pi) = #qty(3.32, "kO") \
+	R_"X,out" approx R_"X,C" = #qty(6.8, "kO")
 $
 
 Using $f_"c" = #qty(71.25, "Hz")$ from @f:fc and $R_"in"$ as the source impedance, we can finally calculate $C_"XY"$, $C_"X,E"$, and $C_"in"$:
 
 $
-	C_"XY" = 1/(2pi (R_"X,out" + R_"Y,in") f_"c") = #qty(292.19, "nF") \
-	C_"X,E" = 1/(2pi X_"C"_"X,E" f_"c") = 1/(2pi (R_"X,E")/10 f_"c") = #qty(10.15, "uF")
-	C_"in" = 1/(2pi (R_"in" + R_"X,in") f_"c") = #qty(506.52, "nF")
+	C_"XY" = 1/(2pi (R_"X,out" + R_"Y,in") f_"c") = #qty(298.04, "nF") \
+	C_"X,E" = 1/(2pi X_"C"_"X,E" f_"c") = 1/(2pi (R_"X,E")/10 f_"c") = #qty(10.15, "uF") \
+	C_"in" = 1/(2pi (R_"in" + R_"X,in") f_"c") = #qty(517.07, "nF")
 $
 
 We can use a #qty(330, "nF") capacitor for $C_"XY"$, a #qty(15, "uF") capacitor for $C_"X,E"$, and
 a #qty(680, "nF") capacitor for $C_"in"$.
+
+== Simulation
