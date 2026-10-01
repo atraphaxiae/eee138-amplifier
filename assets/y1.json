@@ -210,7 +210,7 @@
                 }
             ],
             "label": {
-                "value": "C_\\text{Y}"
+                "value": "C_\\text{Y,E}"
             },
             "id": "capacitor"
         },

@@ -391,3 +391,54 @@ $
 $
 
 Which is well below the maximum power dissipation of the 2N3904 in ambient conditions @2n3904.
+
+== AC Analysis
+First we calculate the transconductance and internal resistances of the transistor at room
+temperature, as well as the AC load seen by the collector:
+
+$
+	g_"Y,m" = I_"Y,C,Q"/V_"T" = #qty(447.47, "mS") \
+	r_"Y,e" = 1/g_"Y,m" = #qty(2.23, "O") \
+	r_("Y",pi) = beta_"Y" r_"Y,e" = #qty(446.96, "O") \
+	R_"Y,L" = R_"Y,C" || R_"Z,in" = #qty(117.84, "O")
+$
+
+Because $R_"Y,E"$ is totally bypassed by $C_"Y,E"$, we have:
+
+$
+	A_"Y,v" = R_"Y,L"/r_"Y,e" = 52.84
+$
+
+Finally, calculating the input impedance:
+
+$
+	R_"Y,in" = R_"Y,D1" || R_"Y,D2" || r_("Y",pi) = #qty(366.08, "O")
+$
+
+With this, we can also finally calculate the output impedance of Z, and in turn, the value of its
+output coupling capacitor, assuming $R_"Y,out" approx R_"Y,C"$:
+
+$
+	R_"Z,out"
+		=& R_"Z,E" || [R_"Y,out" + (r_"Z,e" + R_"Z,EB")/3] \
+		=& #qty(12.25, "O")
+$
+
+Which is much less than the output impedance limit from the specification. We can then calculate the
+output coupling capacitor, noting that it forms a high-pass filter. In order to find the cut-off
+frequency, we need to set a limit for the attenuation of the lower-bound frequency. In our case, we
+want #qty(500, "Hz") signal to be attenuated no more than #qty(1, "%"). Calculating the cut-off
+frequency using this criterion:
+
+$
+	|H(f)| = 1 - 0.01 = 0.99 = f/sqrt(f^2 + f_"c"^2) \
+	f_"c" = #qty(71.25, "Hz")
+$
+
+Then finally calculating the output coupling capacitor:
+
+$
+	C_"out" = 1/(2pi (R_"Z,out" + R_"L") f_"c") = #qty(110.31, "uF")
+$
+
+We can use a standard value of #qty(150, "uF") instead.
