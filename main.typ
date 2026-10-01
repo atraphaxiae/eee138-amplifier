@@ -467,5 +467,11 @@ however we see a significant distortion in the waveform of $V_"Y,C"$, with flat 
 bottoms. To reduce this distortion, we can instead use a partially-bypassed common-emitter topology.
 Adding an unbypassed #qty(3, "O") resistor effectively removes this distortion, but it reduces the
 gain to #num(25.59) at #qty(500, "Hz") and #num(26.21) at #qty(10, "kHz"). We will need to update
-$A_"Y,v"$ since the measured values are very different from the theoretical values. We therefore use
-$A_"Y,v" = 25.59$.
+$A_"Y,v"$ since the measured values are very different from the theoretical values:
+
+$
+	A_"Y,v" = R_"Y,L"/(r_"Y,e" + R_"Y,E1") = 22.53
+$
+
+Using this new theoretical gain, the measured gains correspond to a #qtyrange(13.58, 16.33, "%")
+increase from the theoretical gain, for #qty(500, "Hz") and #qty(10, "kHz") respectively.
