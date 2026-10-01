@@ -271,9 +271,9 @@ output of the second common-emitter stage, at #qty(500, "Hz") and #qty(10, "kHz"
 found using $V_"Z,B,Q"$, $V_"out,pp"$ and the theoretical $A_"Z,v"$. We also use a placeholder
 output coupling capacitor value of #qty(470, "uF").
 
-At both frequencies, the measured gain is 0.90. This corresponds to a #qty(-2.17, "%") discrepancy
-between the theoretical and actual gain value, which is acceptable. This is the reason why we are
-targeting a gain of 220, to account for these variances.
+At both frequencies, the measured gain is #num(0.90). This corresponds to a #qty(-2.17, "%")
+discrepancy between the theoretical and actual gain value, which is acceptable. This is the reason
+why we are targeting a gain of #num(220), to account for these variances.
 
 = Second Common-Emitter Stage
 == DC Analysis
@@ -415,19 +415,8 @@ $
 	R_"Y,in" = R_"Y,D1" || R_"Y,D2" || r_("Y",pi) = #qty(366.08, "O")
 $
 
-Finally, to calculate the value of the bypass capacitor, we want its reactance to be at least ten
-times smaller than $R_"Y,E"$ at the lower-bound frequency @ce-amplifier:
-
-$
-	C_"Y,E"
-		=& 1/(2pi X_"C"_"Y,E" f) \
-		=& 1/(2pi (R_"Y,E"/10) f) \
-		=& #qty(37.14, "uF")
-$
-
-We can use a standard value of $C_"Y,E" = #qty(47, "uF")$ instead. We can also finally calculate the
-output impedance of Z, and in turn, the value of its output coupling capacitor, assuming $R_"Y,out"
-approx R_"Y,C"$:
+Now we can finally calculate the output impedance of Z, and in turn, the value of its output
+coupling capacitor, assuming $R_"Y,out" approx R_"Y,C"$:
 
 $
 	R_"Z,out"
@@ -444,7 +433,7 @@ frequency using this criterion:
 $
 	|H(f)| = 1 - 0.01 = 0.99 = f/sqrt(f^2 + f_"c"^2) \
 	f_"c" = #qty(71.25, "Hz")
-$
+$ <f:fc>
 
 Then finally calculating the output coupling capacitor:
 
@@ -452,6 +441,29 @@ $
 	C_"out" = 1/(2pi (R_"Z,out" + R_"L") f_"c") = #qty(110.31, "uF")
 $
 
-We can use a standard value of $C_"out" = #qty(150, "uF")$ instead.
+We can use a standard value of $C_"out" = #qty(150, "uF")$ instead. Finally, to calculate the value
+of the bypass capacitor, we want its reactance to be at least ten times smaller than $R_"Y,E"$ at
+the lower-bound frequency @ce-amplifier. Using the $f = f_"c"$ from @f:fc, we have:
+
+$
+	C_"Y,E"
+		=& 1/(2pi X_"C"_"Y,E" f_"c") \
+		=& 1/(2pi (R_"Y,E"/10) f_"c") \
+		=& #qty(260.62, "uF")
+$
+
+We can use a standard value of $C_"Y,E" = #qty(47, "uF")$ instead.
 
 == Simulation
+For the simulation, we use a #qty(45.26, "mV")pp, #qty(1.69, "V") DC offset sine wave at
+#qty(500, "Hz") and #qty(10, "kHz"), to simulate the output of the first common-emitter stage after
+the coupling capacitor. These values were found using $V_"Y,B,Q"$, $V_"out,pp"$ and the combined
+gain of $A_"Y,v"$ and $A_"Z,v"$.
+
+We get a measured gain of #num(50.36) for #qty(500, "Hz") and #num(55.35) for #qty(10, "kHz"),
+however we see a significant distortion in the waveform of $V_"Y,C"$, with flat tops and sharper
+bottoms. To reduce this distortion, we can instead use a partially-bypassed common-emitter topology.
+Adding an unbypassed #qty(3, "O") resistor almost completely removes this distortion, but it
+reduces the gain to #num(25.59) at #qty(500, "Hz") and #num(26.21) at #qty(10, "kHz"). We will need
+to update $A_"Y,v"$ since the measured values are very different from the theoretical values. We
+therefore use $A_"Y,v" = 25.59$.
