@@ -463,7 +463,7 @@ gain of $A_"Y,v"$ and $A_"Z,v"$.
 We get a measured gain of #num(50.36) for #qty(500, "Hz") and #num(55.35) for #qty(10, "kHz"),
 however we see a significant distortion in the waveform of $V_"Y,C"$, with flat tops and sharper
 bottoms. To reduce this distortion, we can instead use a partially-bypassed common-emitter topology.
-Adding an unbypassed #qty(3, "O") resistor almost completely removes this distortion, but it
-reduces the gain to #num(25.59) at #qty(500, "Hz") and #num(26.21) at #qty(10, "kHz"). We will need
-to update $A_"Y,v"$ since the measured values are very different from the theoretical values. We
-therefore use $A_"Y,v" = 25.59$.
+Adding an unbypassed #qty(3, "O") resistor effectively removes this distortion, but it reduces the
+gain to #num(25.59) at #qty(500, "Hz") and #num(26.21) at #qty(10, "kHz"). We will need to update
+$A_"Y,v"$ since the measured values are very different from the theoretical values. We therefore use
+$A_"Y,v" = 25.59$.
