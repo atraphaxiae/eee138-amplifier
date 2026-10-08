@@ -765,8 +765,8 @@ The problem is in stage Z, which is the final emitter-follower stage. The output
 not look anything like a sine wave, and it made even the input waveform extremely noisy. The culprit
 may be the 2N4401 transistors acquired, which had rusty legs, and had a counterfeit feel to them.
 Replacing each transistor with a duplicate from the same purchased batch did not have an effect.
-Whether or not these issues were caused defective 2N4401 transistors, or some other design issue, is
-unknown.
+Whether or not these issues were caused by defective 2N4401 transistors, or by some other design
+issue, is unknown.
 
 = Conclusion
 Sadly, this is where we leave this project. While the simulated amplifier fulfilled the
