@@ -698,7 +698,8 @@ Using the power drawn from the supply at the DC operating point, we can approxim
 dissipation of the entire amplifier, which is #qty(1.56, "W"). This is below the maximum power
 dissipation stated in the specifications.
 
-Checking the power dissipation of the resistors, the only resistor which will overheat is $R_"Z,E"$, with a dissipation of #qty(822.61, "mW"). Here, the series #qty(10, "O") resistor is dissipating
+Checking the power dissipation of the resistors, the only resistor which will overheat is $R_"Z,E"$,
+with a dissipation of #qty(822.61, "mW"). Here, the series #qty(10, "O") resistor is dissipating
 #qty(617.11, "mW"), which is a problem since we're using #qty(0.25, "W") resistors by default.
 Instead, we can use a #qty(2, "W") resistor here.
 
@@ -727,3 +728,60 @@ components is shown in @t:changed.
 	),
 	caption: [List of Changed Components]
 ) <t:changed>
+
+= Breadboard Implementation
+An image of the breadboard implementation of the amplifier is shown in @i:bb. Unfortunately, some of
+the capacitors were unavailable, so they had to be replaced with capacitors with values that were
+similar. The list of replaced components is shown in @t:replaced.
+
+#figure(
+	rotate(image("assets/amp.jpeg"), 180deg),
+	caption: [Image of the breadboard implementation of the amplifier.],
+	scope: "parent"
+) <i:bb>
+
+#figure(
+	table(
+		columns: 2,
+		table.header[Component][New Value/Model],
+		$C_"in"$, qty(1, "uF"),
+		$C_"X,E"$, qty(22, "uF")
+	),
+	caption: [List of Replaced Components]
+) <t:replaced>
+
+Regrettably, the circuit did not perform as expected. For the specified sine wave, the output was
+too noisy, and was too far removed from the expected amplified sine wave output. One could say that
+the output did not resemble any typical waveform.
+
+Stages X and Y performed as expected, with the caveat that a small amount of clipping manifested
+itself in the output of stage X. The fix for this is to use a smaller resistance for $R_"X,E"$. It
+was found that using #qty(2, "kO") instead removed this clipping entirely. Another issue is that the
+gain at the output of Y was too high, with the output voltage being almost #qty(3, "V")pp,
+corresponding to a gain of #num(300), though this is still within the specifications. Although, this
+might just be because the output was measured without the load of the final stage.
+
+The problem is in stage Z, which is the final emitter-follower stage. The output of this stage did
+not look anything like a sine wave, and it made even the input waveform extremely noisy. The culprit
+may be the 2N4401 transistors acquired, which had rusty legs, and had a counterfeit feel to them.
+Replacing each transistor with a duplicate from the same purchased batch did not have an effect.
+Whether or not these issues were caused defective 2N4401 transistors, or some other design issue, is
+unknown.
+
+= Conclusion
+Sadly, this is where we leave this project. While the simulated amplifier fulfilled the
+specifications with flying colors, the physical implementation failed to satisfy output
+expectations. While stages X and Y behaved largely as predicted, stage Z did not, leaving us with
+a heavily distorted output waveform which did not resemble the input sine wave in any conceivable
+way.
+
+The exact cause of the failure in stage Z remains unknown. Defective 2N4401 transistors may be the
+culprit, as they were of questionable quality and provenance, though it may also just be a problem
+with the overall design of the emitter-follower.
+
+Despite the unsuccessful final result, this project demonstrated the importance of validating an
+amplifier design not only through theoretical calculations and simulations, but also through
+physical testing. This is highlighted in the final stage, which did not perform as expected in real
+life. While I would like to get to the bottom of this issue, I think I've rambled on enough in this
+paper, and I've become generally tired of designing amplifiers. This concludes my journey with EEE
+138.
